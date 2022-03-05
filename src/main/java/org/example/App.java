@@ -2,6 +2,7 @@ package org.example;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 
 /**
@@ -18,14 +19,25 @@ public class App
         HttpServer httpServer = vertx.createHttpServer();
         Router router = Router.router(vertx);
 
-        router
-                .route()
+        Route route1 = router
+                .route("/hello")
                 .handler(routingContext -> {
                     HttpServerResponse response = routingContext.response();
-                    response.putHeader("content-type", "text/plain");
-                    response.end("Hi Alvi");
+                    System.out.println("first handler print");
+                    response.setChunked(true);
+                    response.write("First handler");
+                    routingContext
+                            .vertx()
+                            .setTimer(5000, tid -> routingContext.next());
                 });
+        Route route2 = router
+                .route("/hello")
+                .handler(routingContext -> {
+                    HttpServerResponse response = routingContext.response();
+                    response.write("Second Handler");
+                    response.end("ended");
 
+                });
 
         httpServer
                 .requestHandler(router)
