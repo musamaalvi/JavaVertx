@@ -26,7 +26,7 @@ public class App
                     HttpServerResponse response = routingContext.response();
                     response.setChunked(true);
                     response.write("First handler");
-
+                    response.end();
                 });
 
 
