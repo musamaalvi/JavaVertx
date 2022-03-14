@@ -20,7 +20,7 @@ public class App
         Router router = Router.router(vertx);
 
         Route handler1 = router
-                .route("/hello")
+                .get("/hello")
                 .handler(routingContext -> {
                     System.out.println("first handler print");
                     HttpServerResponse response = routingContext.response();
