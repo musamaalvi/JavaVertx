@@ -20,12 +20,13 @@ public class App
         Router router = Router.router(vertx);
 
         Route handler1 = router
-                .get("/hello")
+                .get("/hello/:name")
                 .handler(routingContext -> {
-                    System.out.println("first handler print");
+                    String name = routingContext.request().getParam("name");
+                    System.out.println("first handler print" + name);
                     HttpServerResponse response = routingContext.response();
                     response.setChunked(true);
-                    response.write("First handler");
+                    response.write("First handler " + name);
                     response.end();
                 });
 
